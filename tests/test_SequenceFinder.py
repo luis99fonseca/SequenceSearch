@@ -23,6 +23,11 @@ class TestSequenceFinder(unittest.TestCase):
         result = self.sequenceFinder.get_matrix()
         self.assertEqual(result, [[2, 1], [3, 4]])
 
+    def test_right_matrix_asymmetrical_shape(self):
+        self.sequenceFinder.read_input(self.test_files_path + "test06.txt")
+        result = self.sequenceFinder.get_matrix()
+        self.assertEqual(result, [[5, 8, 9], [6, 7, 1], [4, 3, 2], [10, 12, 13]])
+
     def test_case01(self):
         result = self.executeSequenceFinder_basicPipeline("test01.txt")
         self.assertEqual(result, [1, 2, 3, 4])
