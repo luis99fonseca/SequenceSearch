@@ -4,20 +4,22 @@ from main import SequenceFinder
 
 class TestSequenceFinder(unittest.TestCase):
 
+    test_files_path = "../files/"
+
     def setUp(self):
         self.sequenceFinder = SequenceFinder.SequenceFinder()
 
     def executeSequenceFinder_basicPipeline(self, file_name):
-        self.sequenceFinder.read_input(file_name)
+        self.sequenceFinder.read_input(self.test_files_path + file_name)
         return self.sequenceFinder.compute_sequence()
 
     def test_right_dimensions(self):
-        self.sequenceFinder.read_input("test06.txt")
+        self.sequenceFinder.read_input(self.test_files_path + "test06.txt")
         result = self.sequenceFinder.get_dimension()
         self.assertEqual(result, (4, 3))
 
     def test_right_matrix(self):
-        self.sequenceFinder.read_input("test03.txt")
+        self.sequenceFinder.read_input(self.test_files_path + "test03.txt")
         result = self.sequenceFinder.get_matrix()
         self.assertEqual(result, [[2, 1], [3, 4]])
 
