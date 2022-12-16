@@ -1,10 +1,11 @@
 import unittest
 
-from main import SequenceFinder, Direction
+from main import SequenceFinder
 
+import os
 
 class TestSequenceFinder(unittest.TestCase):
-    test_files_path = "../files/"
+    test_files_path = os.path.dirname(__file__) + "/files/"
 
     def setUp(self):
         self.sequenceFinder = SequenceFinder.SequenceFinder()

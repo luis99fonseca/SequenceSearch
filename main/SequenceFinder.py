@@ -25,8 +25,6 @@ class SequenceFinder:
         self.__memo_matrix = []
         self.__biggest_sequence = []
 
-        self.calls = 0
-
     def read_input(self, file_name=None):
         """Reads the given input obtained from a file (given the file path), or when not provided, from the standard
         input
@@ -62,7 +60,6 @@ class SequenceFinder:
                 t_sequence = self.__check_neighbor((line, col))
                 if len(t_sequence) > len(self.__biggest_sequence):
                     self.__biggest_sequence = t_sequence
-        print(self.calls)
         return self.__biggest_sequence
 
     def __check_neighbor(self, actual_coords, previous_value=None, incoming_direction=Direction.STAND):
@@ -80,8 +77,6 @@ class SequenceFinder:
         list[int]
             A list containing a subset of successive values in the current chain
         """
-
-        self.calls += 1
 
         result = []
         # stop condition 1: check margins
