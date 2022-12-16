@@ -1,2 +1,2 @@
 # SequenceSearch
-Resolution Proposal of the Problem "Sequence Search in a Matrix"
+Solution Proposal for the Problem "Sequence Search in a Matrix"
