@@ -4,12 +4,36 @@ from utils.utils import check_complementary
 
 
 class SequenceFinder:
+    """
+    A class used to solve a (single) instance of a Matrix Sequence Problem
+    ...
+    Attributes
+    ----------
+    __lines : int
+        The number of lines of the solving matrix
+    __cols : int
+        The number of columns of the solving matrix
+    __matrix : list[[int]]
+        The matrix of this problem's instance
+    __biggest_sequence : list[int]
+        Current biggest sequence found
+    """
+
     def __init__(self):
         self.__lines, self.__cols = 0, 0
         self.__matrix = []
         self.__biggest_sequence = []
 
-    def read_input(self, file_name):
+    def read_input(self, file_name=None):
+        """Reads the given input obtained from a file (given the file path), or when not provided, from the standard
+        input
+
+        Parameters
+        ----------
+        file_name : str
+            Path to the file to be read
+        """
+
         with fileinput.input(files=file_name) as file01:
             self.__lines, self.__cols = file01.readline().split(" ")
             self.__lines = int(self.__lines)
@@ -21,6 +45,13 @@ class SequenceFinder:
             file01.close()
 
     def compute_sequence(self):
+        """Iterates the previously obtained matrix to find the biggest sequence of successive numbers
+
+        Returns
+        ----------
+        list[int]
+            The biggest sequence obtained during the computation
+        """
         for line in range(self.__lines):
             for col in range(self.__cols):
                 t_sequence = self.__check_neighbor((line, col))
@@ -30,6 +61,20 @@ class SequenceFinder:
         return self.__biggest_sequence
 
     def __check_neighbor(self, actual_coords, previous_value=None, incoming_direction=Direction.STAND):
+        """Checks if given point in matrix can be part of a sequence following a previous, adjacent point
+        Parameters
+        ----------
+        actual_coords : (int, int)
+            Actual coordinates under analysis, in the form of (line, column)
+        previous_value : int
+            Value existent in the previous point of the matrix, adjacent to the current point
+        incoming_direction : Direction
+            Direction from which the current point was reached
+        Returns
+        ----------
+        list[int]
+            A list containing a subset of successive values in the current chain
+        """
 
         result = []
         # stop condition 1: check margins
@@ -52,9 +97,23 @@ class SequenceFinder:
         return [self.__matrix[actual_coords[0]][actual_coords[1]]] + result
 
     def get_dimension(self):
+        """
+
+        Returns
+        ----------
+        (int, int)
+            Dimension of the obtained matrix, in the form of (number of lines, number of columns)
+        """
         return self.__lines, self.__cols
 
     def get_matrix(self):
+        """
+
+        Returns
+        ----------
+        list[[int]]
+            Returns the matrix of this problem's instance, or [] if it was not yet set
+        """
         return self.__matrix
 
 

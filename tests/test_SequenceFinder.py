@@ -2,8 +2,8 @@ import unittest
 
 from main import SequenceFinder, Direction
 
-class TestSequenceFinder(unittest.TestCase):
 
+class TestSequenceFinder(unittest.TestCase):
     test_files_path = "../files/"
 
     def setUp(self):
@@ -51,6 +51,7 @@ class TestSequenceFinder(unittest.TestCase):
     def test_case06(self):
         result = self.executeSequenceFinder_basicPipeline("test06.txt")
         self.assertEqual(result, [5, 6, 7, 8, 9])
+
 
 if __name__ == '__main__':
     unittest.main()
