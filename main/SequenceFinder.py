@@ -1,6 +1,6 @@
 import fileinput
 from main.Direction import Direction
-from utils.utils import check_complementary
+from utils.utils import check_complementary, get_complementary
 
 
 class SequenceFinder:
@@ -22,7 +22,10 @@ class SequenceFinder:
     def __init__(self):
         self.__lines, self.__cols = 0, 0
         self.__matrix = []
+        self.__memo_matrix = []
         self.__biggest_sequence = []
+
+        self.calls = 0
 
     def read_input(self, file_name=None):
         """Reads the given input obtained from a file (given the file path), or when not provided, from the standard
@@ -42,6 +45,8 @@ class SequenceFinder:
             for line in range(self.__lines):
                 matrix_line = [int(x) for x in file01.readline().strip().split(" ")]
                 self.__matrix.append(matrix_line)
+
+            self.__memo_matrix = [[None for _ in range(self.__cols)] for _ in range(self.__lines)]
             file01.close()
 
     def compute_sequence(self):
@@ -57,7 +62,7 @@ class SequenceFinder:
                 t_sequence = self.__check_neighbor((line, col))
                 if len(t_sequence) > len(self.__biggest_sequence):
                     self.__biggest_sequence = t_sequence
-
+        print(self.calls)
         return self.__biggest_sequence
 
     def __check_neighbor(self, actual_coords, previous_value=None, incoming_direction=Direction.STAND):
@@ -76,6 +81,8 @@ class SequenceFinder:
             A list containing a subset of successive values in the current chain
         """
 
+        self.calls += 1
+
         result = []
         # stop condition 1: check margins
         if actual_coords[0] < 0 or actual_coords[1] < 0 or actual_coords[0] >= self.__lines or actual_coords[1] \
@@ -86,12 +93,42 @@ class SequenceFinder:
         if previous_value and self.__matrix[actual_coords[0]][actual_coords[1]] != previous_value + 1:
             return result
 
-        for outcoming_direction in Direction:
-            # going back to incoming direction would lead to infinite cycles
-            if not check_complementary(incoming_direction.value, outcoming_direction.value):
-                result += self.__check_neighbor((actual_coords[0] + outcoming_direction.value[0], actual_coords[1] +
-                                                 outcoming_direction.value[1]),
-                                                self.__matrix[actual_coords[0]][actual_coords[1]], outcoming_direction)
+        # if current point was already explored, proceed by following the "memorized" chain
+        if self.__memo_matrix[actual_coords[0]][actual_coords[1]]:
+            result += self.__check_neighbor((actual_coords[0] + self.__memo_matrix[actual_coords[0]][actual_coords[1]].
+                                             value[0], actual_coords[1] +
+                                             self.__memo_matrix[actual_coords[0]][actual_coords[1]].value[1]),
+                                            self.__matrix[actual_coords[0]][actual_coords[1]],
+                                            self.__memo_matrix[actual_coords[0]][actual_coords[1]])
+
+            complementary_coord = get_complementary(incoming_direction.value)
+            if not self.__memo_matrix[actual_coords[0] + complementary_coord[0]][actual_coords[1] + complementary_coord[1]]:
+                self.__memo_matrix[actual_coords[0] + complementary_coord[0]][
+                    actual_coords[1] + complementary_coord[1]] = incoming_direction
+
+        else:
+            for outcoming_direction in Direction:
+                # going back to incoming direction would lead to infinite cycles
+                if not check_complementary(incoming_direction.value, outcoming_direction.value):
+                    result += self.__check_neighbor((actual_coords[0] + outcoming_direction.value[0], actual_coords[1] +
+                                                     outcoming_direction.value[1]),
+                                                    self.__matrix[actual_coords[0]][actual_coords[1]],
+                                                    outcoming_direction)
+
+                    # since numbers are unique, if a chain was found, there is no need to keep looking at the current
+                    # point
+                    if result:
+                        break
+
+            # if no chain was found, the current point was no neighbors with a distance of +1 in value
+            if not result:
+                self.__memo_matrix[actual_coords[0]][actual_coords[1]] = Direction.STAND
+
+        # add incoming direction to memo_matrix point from which this point was reached, as a chain was formed
+        complementary_coord = get_complementary(incoming_direction.value)
+        if not self.__memo_matrix[actual_coords[0] + complementary_coord[0]][actual_coords[1] + complementary_coord[1]]:
+            self.__memo_matrix[actual_coords[0] + complementary_coord[0]][actual_coords[1] + complementary_coord[1]] = \
+                incoming_direction
 
         # add actual point to chain obtained backwards
         return [self.__matrix[actual_coords[0]][actual_coords[1]]] + result
@@ -119,5 +156,8 @@ class SequenceFinder:
 
 if __name__ == '__main__':
     sf = SequenceFinder()
-    sf.read_input("../files/test04.txt")
-    print(sf.compute_sequence())
+    sf.read_input("../files/test03.txt")
+    solution = sf.compute_sequence()
+    for i in solution[:-1]:
+        print(i, end=" ")
+    print(solution[-1], end="")
