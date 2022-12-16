@@ -1,5 +1,5 @@
 import fileinput
-from main.Direction import Direction
+from src.Direction import Direction
 from utils.utils import check_complementary, get_complementary
 
 
@@ -77,7 +77,6 @@ class SequenceFinder:
         list[int]
             A list containing a subset of successive values in the current chain
         """
-
         result = []
         # stop condition 1: check margins
         if actual_coords[0] < 0 or actual_coords[1] < 0 or actual_coords[0] >= self.__lines or actual_coords[1] \
@@ -96,11 +95,6 @@ class SequenceFinder:
                                             self.__matrix[actual_coords[0]][actual_coords[1]],
                                             self.__memo_matrix[actual_coords[0]][actual_coords[1]])
 
-            complementary_coord = get_complementary(incoming_direction.value)
-            if not self.__memo_matrix[actual_coords[0] + complementary_coord[0]][actual_coords[1] + complementary_coord[1]]:
-                self.__memo_matrix[actual_coords[0] + complementary_coord[0]][
-                    actual_coords[1] + complementary_coord[1]] = incoming_direction
-
         else:
             for outcoming_direction in Direction:
                 # going back to incoming direction would lead to infinite cycles
@@ -115,7 +109,7 @@ class SequenceFinder:
                     if result:
                         break
 
-            # if no chain was found, the current point was no neighbors with a distance of +1 in value
+            # if no chain was found, the current point has no neighbors with a distance of +1 in value
             if not result:
                 self.__memo_matrix[actual_coords[0]][actual_coords[1]] = Direction.STAND
 
@@ -151,7 +145,7 @@ class SequenceFinder:
 
 if __name__ == '__main__':
     sf = SequenceFinder()
-    sf.read_input("../files/test03.txt")
+    sf.read_input("../tests/files/test03.txt")
     solution = sf.compute_sequence()
     for i in solution[:-1]:
         print(i, end=" ")

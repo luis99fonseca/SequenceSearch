@@ -1,7 +1,5 @@
 import unittest
-
-from main import SequenceFinder
-
+from src import SequenceFinder
 import os
 
 class TestSequenceFinder(unittest.TestCase):
