@@ -1,4 +1,5 @@
 import fileinput
+from Direction import Direction
 
 class SequenceFinder:
     def __init__(self):
@@ -17,6 +18,11 @@ class SequenceFinder:
             file01.close()
 
     def compute_sequence(self):
+        for line in range(self.lines):
+            for col in range(self.cols):
+                pass
+
+    def __check_neighbor(self, actual_coords, previous_value=None, incoming_direction=Direction.STAND):
         pass
 
     def get_dimension(self):
