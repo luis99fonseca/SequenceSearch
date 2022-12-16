@@ -1,6 +1,6 @@
 import unittest
 
-from main import SequenceFinder
+from main import SequenceFinder, Direction
 
 class TestSequenceFinder(unittest.TestCase):
 
@@ -34,7 +34,7 @@ class TestSequenceFinder(unittest.TestCase):
 
     def test_case02(self):
         result = self.executeSequenceFinder_basicPipeline("test02.txt")
-        self.assertEqual(result, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16])
+        self.assertEqual(result, [1, 2, 3, 4, 5, 6, 7, 8, 9])
 
     def test_case03(self):
         result = self.executeSequenceFinder_basicPipeline("test03.txt")
