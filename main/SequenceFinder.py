@@ -7,3 +7,9 @@ class SequenceFinder:
 
     def compute_sequence(self):
         pass
+
+    def get_dimension(self):
+        pass
+
+    def get_matrix(self):
+        pass
