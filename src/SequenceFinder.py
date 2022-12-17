@@ -15,6 +15,8 @@ class SequenceFinder:
         The number of columns of the solving matrix
     __matrix : list[[int]]
         The matrix of this problem's instance
+    __memo_matrix : list[[int]]
+        Matrix of equal shape as __matrix, used for memoization
     __biggest_sequence : list[int]
         Current biggest sequence found
     """
@@ -62,7 +64,7 @@ class SequenceFinder:
                     self.__biggest_sequence = t_sequence
         return self.__biggest_sequence
 
-    def __check_neighbor(self, actual_coords, previous_value=None, incoming_direction=Direction.STAND):
+    def __check_neighbor(self, actual_coords, previous_value=None, incoming_direction=None):
         """Checks if given point in matrix can be part of a sequence following a previous, adjacent point
         Parameters
         ----------
@@ -86,41 +88,40 @@ class SequenceFinder:
         # stop condition 2: check increment of +1
         if previous_value and self.__matrix[actual_coords[0]][actual_coords[1]] != previous_value + 1:
             return result
-
         # if current point was already explored, proceed by following the "memorized" chain
-        if self.__memo_matrix[actual_coords[0]][actual_coords[1]]:
+        if False: #self.__memo_matrix[actual_coords[0]][actual_coords[1]]:
             result += self.__check_neighbor((actual_coords[0] + self.__memo_matrix[actual_coords[0]][actual_coords[1]].
                                              value[0], actual_coords[1] +
                                              self.__memo_matrix[actual_coords[0]][actual_coords[1]].value[1]),
                                             self.__matrix[actual_coords[0]][actual_coords[1]],
                                             self.__memo_matrix[actual_coords[0]][actual_coords[1]])
 
+        if self.__memo_matrix[actual_coords[0]][actual_coords[1]]:
+            initial_value = self.__matrix[actual_coords[0]][actual_coords[1]]
+            chain_reach = self.__memo_matrix[actual_coords[0]][actual_coords[1]]
+            # capitalizing on the fact that if a chain exists, it consists of an increment of +1 for every element
+            result = [j for j in range(initial_value, initial_value + chain_reach)]
+            return result
+
         else:
             for outcoming_direction in Direction:
                 # going back to incoming direction would lead to infinite cycles
-                if not check_complementary(incoming_direction.value, outcoming_direction.value):
+                if not incoming_direction or not check_complementary(incoming_direction.value, outcoming_direction.value):
                     result += self.__check_neighbor((actual_coords[0] + outcoming_direction.value[0], actual_coords[1] +
                                                      outcoming_direction.value[1]),
                                                     self.__matrix[actual_coords[0]][actual_coords[1]],
                                                     outcoming_direction)
 
-                    # since numbers are unique, if a chain was found, there is no need to keep looking at the current
+                    # since numbers are unique, if a chain was found, there is no need to keep looking from the current
                     # point
                     if result:
                         break
 
-            # if no chain was found, the current point has no neighbors with a distance of +1 in value
-            if not result:
-                self.__memo_matrix[actual_coords[0]][actual_coords[1]] = Direction.STAND
-
-        # add incoming direction to memo_matrix point from which this point was reached, as a chain was formed
-        complementary_coord = get_complementary(incoming_direction.value)
-        if not self.__memo_matrix[actual_coords[0] + complementary_coord[0]][actual_coords[1] + complementary_coord[1]]:
-            self.__memo_matrix[actual_coords[0] + complementary_coord[0]][actual_coords[1] + complementary_coord[1]] = \
-                incoming_direction
+        current_chain = [self.__matrix[actual_coords[0]][actual_coords[1]]] + result
+        self.__memo_matrix[actual_coords[0]][actual_coords[1]] = len(current_chain)
 
         # add actual point to chain obtained backwards
-        return [self.__matrix[actual_coords[0]][actual_coords[1]]] + result
+        return current_chain
 
     def get_dimension(self):
         """
@@ -145,7 +146,7 @@ class SequenceFinder:
 
 if __name__ == '__main__':
     sf = SequenceFinder()
-    sf.read_input("../tests/files/test03.txt")
+    sf.read_input("../tests/files/test01.txt")
     solution = sf.compute_sequence()
     for i in solution[:-1]:
         print(i, end=" ")
