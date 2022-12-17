@@ -88,14 +88,8 @@ class SequenceFinder:
         # stop condition 2: check increment of +1
         if previous_value and self.__matrix[actual_coords[0]][actual_coords[1]] != previous_value + 1:
             return result
-        # if current point was already explored, proceed by following the "memorized" chain
-        if False: #self.__memo_matrix[actual_coords[0]][actual_coords[1]]:
-            result += self.__check_neighbor((actual_coords[0] + self.__memo_matrix[actual_coords[0]][actual_coords[1]].
-                                             value[0], actual_coords[1] +
-                                             self.__memo_matrix[actual_coords[0]][actual_coords[1]].value[1]),
-                                            self.__matrix[actual_coords[0]][actual_coords[1]],
-                                            self.__memo_matrix[actual_coords[0]][actual_coords[1]])
 
+        # if current point was already explored, it is possible to check how far is reaches from here
         if self.__memo_matrix[actual_coords[0]][actual_coords[1]]:
             initial_value = self.__matrix[actual_coords[0]][actual_coords[1]]
             chain_reach = self.__memo_matrix[actual_coords[0]][actual_coords[1]]
