@@ -110,7 +110,7 @@ class SequenceFinder:
                     # point
                     if result:
                         break
-                        
+
         # add actual point to chain obtained backwards
         current_chain = [self.__matrix[actual_coords[0]][actual_coords[1]]] + result
         self.__memo_matrix[actual_coords[0]][actual_coords[1]] = len(current_chain)
@@ -140,9 +140,9 @@ class SequenceFinder:
     def get_sequence(self):
         """
 
-                Returns
-                ----------
-                list[int]
-                    Returns the solution of this problem's instance, or [] if it was not yet computed
-                """
+        Returns
+        ----------
+        list[int]
+            Returns the solution of this problem's instance, or [] if it was not yet computed
+        """
         return self.__biggest_sequence
