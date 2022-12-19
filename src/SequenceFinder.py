@@ -1,6 +1,6 @@
 import fileinput
 from src.Direction import Direction
-from utils.utils import check_complementary, get_complementary
+from utils.utils import check_complementary
 
 
 class SequenceFinder:
