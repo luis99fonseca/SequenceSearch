@@ -2,6 +2,7 @@ import unittest
 from src import SequenceFinder
 import os
 
+
 class TestSequenceFinder(unittest.TestCase):
     test_files_path = os.path.dirname(__file__) + "/files/"
 
@@ -54,3 +55,4 @@ class TestSequenceFinder(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
