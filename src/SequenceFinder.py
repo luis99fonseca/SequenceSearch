@@ -136,3 +136,16 @@ class SequenceFinder:
             Returns the matrix of this problem's instance, or [] if it was not yet set
         """
         return self.__matrix
+
+    def get_sequence(self):
+        pass
+
+if __name__ == '__main__':
+    sf = SequenceFinder()
+    print(sf.get_dimension(), sf.get_sequence())
+    sf.read_input("../tests/files/test01.txt")
+    solution = sf.compute_sequence()
+    for i in solution[:-1]:
+        print(i, end=" ")
+    print(solution[-1], end="")
+    print(sf.get_dimension())

@@ -28,6 +28,27 @@ class TestSequenceFinder(unittest.TestCase):
         result = self.sequenceFinder.get_matrix()
         self.assertEqual(result, [[5, 8, 9], [6, 7, 1], [4, 3, 2], [10, 12, 13]])
 
+    def test_get_sequence_before_computation(self):
+        self.assertEqual(self.sequenceFinder.get_sequence(), [])
+
+    def test_get_matrix_before_computation(self):
+        self.assertEqual(self.sequenceFinder.get_matrix(), [])
+
+    def test_get_dimension_before_computation(self):
+        self.assertEqual(self.sequenceFinder.get_sequence(), (0, 0))
+
+    def test_get_sequence_after_computation(self):
+        self.executeSequenceFinder_basicPipeline("test01.txt")
+        self.assertEqual(self.sequenceFinder.get_sequence(), [1, 2, 3, 4])
+
+    def test_get_matrix_after_computation(self):
+        self.executeSequenceFinder_basicPipeline("test01.txt")
+        self.assertEqual(self.sequenceFinder.get_matrix(), [[5, 8, 7], [6, 9, 1], [4, 3, 2]])
+
+    def test_get_dimension_after_computation(self):
+        self.executeSequenceFinder_basicPipeline("test01.txt")
+        self.assertEqual(self.sequenceFinder.get_sequence(), (3, 3))
+
     def test_case01(self):
         result = self.executeSequenceFinder_basicPipeline("test01.txt")
         self.assertEqual(result, [1, 2, 3, 4])
