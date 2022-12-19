@@ -136,3 +136,13 @@ class SequenceFinder:
             Returns the matrix of this problem's instance, or [] if it was not yet set
         """
         return self.__matrix
+
+    def get_sequence(self):
+        """
+
+                Returns
+                ----------
+                list[int]
+                    Returns the solution of this problem's instance, or [] if it was not yet computed
+                """
+        return self.__biggest_sequence
