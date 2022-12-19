@@ -35,7 +35,7 @@ class TestSequenceFinder(unittest.TestCase):
         self.assertEqual(self.sequenceFinder.get_matrix(), [])
 
     def test_get_dimension_before_computation(self):
-        self.assertEqual(self.sequenceFinder.get_sequence(), (0, 0))
+        self.assertEqual(self.sequenceFinder.get_dimension(), (0, 0))
 
     def test_get_sequence_after_computation(self):
         self.executeSequenceFinder_basicPipeline("test01.txt")
@@ -47,7 +47,7 @@ class TestSequenceFinder(unittest.TestCase):
 
     def test_get_dimension_after_computation(self):
         self.executeSequenceFinder_basicPipeline("test01.txt")
-        self.assertEqual(self.sequenceFinder.get_sequence(), (3, 3))
+        self.assertEqual(self.sequenceFinder.get_dimension(), (3, 3))
 
     def test_case01(self):
         result = self.executeSequenceFinder_basicPipeline("test01.txt")
