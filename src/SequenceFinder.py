@@ -62,7 +62,7 @@ class SequenceFinder:
                 t_sequence = self.__check_neighbor((line, col))
                 if len(t_sequence) > len(self.__biggest_sequence):
                     self.__biggest_sequence = t_sequence
-        return self.__biggest_sequence
+        return self.get_sequence()
 
     def __check_neighbor(self, actual_coords, previous_value=None, incoming_direction=None):
         """Checks if given point in matrix can be part of a sequence following a previous, adjacent point
