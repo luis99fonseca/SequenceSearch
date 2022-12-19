@@ -9,5 +9,5 @@ python3 main.py <input>
 
 ###### Example
 ```
-python3 main.py < tests/test01.txt
+python3 main.py < tests/files/test01.txt
 ```
